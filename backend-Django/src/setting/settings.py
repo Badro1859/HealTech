@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'accounts',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +82,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# user authentication
+
+AUTH_USER_MODEL = 'accounts.User'
+
+# LOGIN_URL = 'user:login'
 
 
 # Password validation
