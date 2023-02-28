@@ -1,22 +1,17 @@
 
 from accounts.models import User
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, UserUpdateSerializer
 
 
 
-def get_or_create_user(data):
-    
+def get_userSerializer(data): 
     ser = UserSerializer(data=data)
     if ser.is_valid(raise_exception=True):
-        try:
-            user = User.objects.filter(email=UserSerializer.validated_data['email'])
-            return user
-        except:
-            return ser.save()
+        return ser
+    return None
 
-def update_user(instance, data):
-    ser = UserSerializer(instance=instance, data=data, partial=True)
-    
+def get_userUpdateSerializer(instance, data): 
+    ser = UserUpdateSerializer(instance=instance, data=data)
     if ser.is_valid(raise_exception=True):
-        return ser.save()
-
+        return ser
+    return None

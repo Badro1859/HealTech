@@ -13,7 +13,7 @@
 | 2 |    /logout                       |                  post                          |
 | 3 |    /admin                        |                  get                           |
 | 4 |    /admin/<id>/                  |       get - put - patch - delete               |
-| 5 |                                  |                                                |
+| 5 |    /reset-password/<id>/         |                 put                            |
 | 6 |                                  |                                                |
 | 7 |                                  |                                                |
 | 8 |                                  |                                                |

@@ -14,12 +14,13 @@ routes = DefaultRouter() ## associated all : list, create, retrieve, update, des
 routes.register(r'admin', views.AdminViewSet,  basename='admin')
 
 
-
 app_name='accounts'
 urlpatterns = [
     *routes.urls,
 
     path(r"login", TokenCreateView.as_view(), name="login"),
     path(r"logout", TokenDestroyView.as_view(), name="logout"),
+
+    path(r'reset-password/<int:pk>/', views.ResetPasswordAPIView.as_view(), name='reset-password')
 
 ]
