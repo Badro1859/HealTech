@@ -1,0 +1,3 @@
+[submodule "frontend-Vue"]
+	path = frontend-Vue
+	url = https://github.com/MiilouDz/HealthAppFront.git

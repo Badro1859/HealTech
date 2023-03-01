@@ -46,11 +46,6 @@ class ResetPasswordAPIView(UpdateAPIView):
         return Response({"success": "Password reset successful"},
                         status=status.HTTP_201_CREATED,)
 
-
-
-
-
-
 class AdminViewSet(ModelViewSet):
 
     ## global params
@@ -79,7 +74,7 @@ class AdminViewSet(ModelViewSet):
 
     ### POST method
     def create(self, request, *args, **kwargs):
-        self.userSerializer = get_userSerializer(data=request.data)
+        self.userSerializer = get_userSerializer(data=request.data.get('user'))
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
@@ -108,5 +103,14 @@ class AdminViewSet(ModelViewSet):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class DoctorViewSet(ModelViewSet):
+    # TODO 
+    pass
 
+class EmployeeViewSet(ModelViewSet):
+    # TODO 
+    pass
 
+class PatientViewSet(ModelViewSet):
+    # TODO 
+    pass

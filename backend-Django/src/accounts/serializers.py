@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'role']
-        read_only_fields = ('id')
+        read_only_fields = ('id',)
 
 
     def create(self, validated_data):
@@ -42,14 +42,12 @@ class UserSerializer(serializers.ModelSerializer):
         ret.pop('password')
         return ret
 
-
 class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'role']
         read_only_fields = ('id', 'role')
-
 
 class PasswordResetSerializer(serializers.Serializer):
     """
@@ -89,8 +87,6 @@ class PasswordResetSerializer(serializers.Serializer):
         return self.instance
 
 
-
-
 class AdminSerializer(serializers.ModelSerializer):
 
     user = UserUpdateSerializer(read_only=True)
@@ -111,3 +107,14 @@ class AdminSerializer(serializers.ModelSerializer):
 
         read_only_field = ('id')
 
+class DoctorSerializer(serializers.ModelSerializer):
+    # TODO
+    pass
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    # TODO
+    pass
+
+class PatientSerializer(serializers.ModelSerializer):
+    # TODO
+    pass

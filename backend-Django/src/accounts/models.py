@@ -109,7 +109,8 @@ class Profile(models.Model):
     gender = models.CharField(_('gender'), choices=gender_choices,max_length=20, default="Male")
     date_of_birth = models.DateField(_('date of birth'), blank=True, null=True)
 
-    phone = PhoneNumberField(_("phone number"), blank=True, null=True, max_length=27)
+    phone = models.CharField(_("phone number"), blank=True, null=True, max_length=27)
+    # phone = PhoneNumberField(_("phone number"), blank=True, null=True, max_length=27)
     profile_picture = models.ImageField(upload_to='profile_pics',blank=True, null=True)
     address = models.CharField(_('address'), max_length=100, blank=True, null=True)
 
