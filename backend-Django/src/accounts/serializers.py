@@ -4,8 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 
-from accounts.models import User, Admin
-
+from accounts.models import User, Admin, Service, Doctor, Employee, Patient
 
 
 
@@ -25,16 +24,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-    def update(self, instance, validated_data):
-        print(validated_data)
-        password = validated_data.pop('password')
-
-        user = super().update(instance, validated_data)
-
-        user.set_password(password)
-        user.save()
-
-        return user
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -46,8 +35,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role']
-        read_only_fields = ('id', 'role')
+        fields = ['username', 'email', 'role']
+        read_only_fields = ('role',)
 
 class PasswordResetSerializer(serializers.Serializer):
     """
@@ -87,34 +76,56 @@ class PasswordResetSerializer(serializers.Serializer):
         return self.instance
 
 
+class ServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = '__all__'
+        read_only_fields = ('id', )
+
+
 class AdminSerializer(serializers.ModelSerializer):
 
     user = UserUpdateSerializer(read_only=True)
 
     class Meta:
         model = Admin
-        fields = [
-            'id',
-            'user',
-            'first_name', 
-            'last_name', 
-            'gender', 
-            'date_of_birth', 
-            'phone',
-            'address',
-            'profile_picture'
-        ]
-
+        fields = '__all__'
         read_only_field = ('id')
 
+    def save(self, **kwargs):
+        kwargs['is_stuff'] = True
+        kwargs['is_admin'] = True
+        return super().save(**kwargs)
+
 class DoctorSerializer(serializers.ModelSerializer):
-    # TODO
-    pass
+    user = UserUpdateSerializer(read_only=True)
+
+    class Meta:
+        model = Doctor
+        fields = '__all__'
+        read_only_field = ('id')
+
+    def save(self, **kwargs):
+        kwargs['is_stuff'] = True
+        return super().save(**kwargs)
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    # TODO
-    pass
+    user = UserUpdateSerializer(read_only=True)
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+        read_only_field = ('id')
+    
+    def save(self, **kwargs):
+        kwargs['is_stuff'] = True
+        return super().save(**kwargs)
 
 class PatientSerializer(serializers.ModelSerializer):
-    # TODO
-    pass
+    user = UserUpdateSerializer(read_only=True)
+
+    class Meta:
+        model = Patient
+        fields = '__all__'
+        read_only_field = ('id')
