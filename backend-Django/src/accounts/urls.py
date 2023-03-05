@@ -12,6 +12,12 @@ routes = DefaultRouter() ## associated all : list, create, retrieve, update, des
 
 ## router create all associated url (post -> create, get -> list ...)
 routes.register(r'admin', views.AdminViewSet,  basename='admin')
+routes.register(r'employee', views.EmployeeViewSet,  basename='employee')
+routes.register(r'doctor', views.DoctorViewSet,  basename='doctor')
+routes.register(r'patient', views.PatientViewSet,  basename='patient')
+
+routes.register(r'service', views.ServiceViewSet, basename='service')
+
 
 
 app_name='accounts'
@@ -21,6 +27,7 @@ urlpatterns = [
     path(r"login", TokenCreateView.as_view(), name="login"),
     path(r"logout", TokenDestroyView.as_view(), name="logout"),
 
-    path(r'reset-password/<int:pk>/', views.ResetPasswordAPIView.as_view(), name='reset-password')
+    path(r'reset-password/<int:pk>/', views.ResetPasswordAPIView.as_view(), name='reset-password'),
+    
 
 ]
