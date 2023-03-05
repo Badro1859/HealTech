@@ -29,7 +29,7 @@ from accounts.permissions import IsOwnerOrAdmin
 class CustomModelViewSet(ModelViewSet):
 
     ## global params
-    permission_classes = (IsOwnerOrAdmin,)
+    # permission_classes = (IsOwnerOrAdmin,)
 
 
     ## API methods
@@ -80,6 +80,7 @@ class CustomModelViewSet(ModelViewSet):
     
     def perform_update(self, serializer):
         updated_user = self.userSerializer.save()
+
         serializer.save(user=updated_user)
 
     ### DELETE method
@@ -126,6 +127,7 @@ class AdminViewSet(CustomModelViewSet):
 
     ## global params
     serializer_class = AdminSerializer
+    permission_classes = (IsAdminUser, )
 
     queryset = Admin.objects.all()
 

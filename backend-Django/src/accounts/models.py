@@ -16,7 +16,7 @@ class CustomManager(BaseUserManager):
         if not username:
             raise ValueError("Users must have a username")
 
-        if extra_fields['role'] != 'patient':
+        if extra_fields['role'] != 'Patient':
             extra_fields.setdefault("is_staff", True)
         if extra_fields['role'] == 'Admin':
             extra_fields.setdefault("is_superuser", True)
