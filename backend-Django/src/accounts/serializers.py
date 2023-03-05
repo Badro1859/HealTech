@@ -94,8 +94,6 @@ class AdminSerializer(serializers.ModelSerializer):
         read_only_field = ('id')
 
     def save(self, **kwargs):
-        kwargs['is_stuff'] = True
-        kwargs['is_admin'] = True
         return super().save(**kwargs)
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -107,7 +105,6 @@ class DoctorSerializer(serializers.ModelSerializer):
         read_only_field = ('id')
 
     def save(self, **kwargs):
-        kwargs['is_stuff'] = True
         return super().save(**kwargs)
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -119,7 +116,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
         read_only_field = ('id')
     
     def save(self, **kwargs):
-        kwargs['is_stuff'] = True
         return super().save(**kwargs)
 
 class PatientSerializer(serializers.ModelSerializer):
