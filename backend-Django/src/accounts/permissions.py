@@ -30,7 +30,8 @@ class IsCustomAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
 
         # check if the user is an admin
-        # 
+        #
+        print("Hellloo")
         return bool(request.user and request.user.is_superuser)
 
 class IsAdminOrReadOnly(permissions.BasePermission):
