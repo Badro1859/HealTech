@@ -224,7 +224,7 @@ class Service(models.Model):
     lib = models.CharField(_('libile of service'), unique=True, max_length=10)
     description = models.TextField(_("description"), blank=True, null=True)
 
-    chief = models.OneToOneField('Admin', on_delete=models.SET_NULL, null=True)
+    chief = models.OneToOneField('Doctor', on_delete=models.SET_NULL, null=True)
     
     phone = models.CharField(_('phone number'), blank=True, null=True, max_length=27)
     icon = models.ImageField(
