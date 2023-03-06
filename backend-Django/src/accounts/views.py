@@ -127,7 +127,7 @@ class AdminViewSet(CustomModelViewSet):
 
     ## global params
     serializer_class = AdminSerializer
-    permission_classes = (IsAdminUser, )
+    # permission_classes = (IsAdminUser, )
 
     queryset = Admin.objects.all()
 
