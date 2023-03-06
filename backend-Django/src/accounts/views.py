@@ -56,7 +56,7 @@ class CustomModelViewSet(ModelViewSet):
     ## API methods
 
 
-    @action(detail=True, renderer_classes=[StaticHTMLRenderer], methods=['post'])
+    @action(detail=True, methods=['post'])
     def reset_password(self, request, *args, **kwargs):
         instance = self.get_object()
         user = instance.user
