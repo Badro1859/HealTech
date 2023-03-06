@@ -28,10 +28,6 @@ class CustomManager(BaseUserManager):
             **extra_fields
         )
 
-
-
-
-
         user_obj.set_password(password)
        
         user_obj.save(using=self._db)
@@ -41,9 +37,10 @@ class CustomManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("role", "Admin")
-        return self._create_user(email, username, password, **extra_fields)
+        user = self._create_user(email, username, password, **extra_fields)
 
-
+        admin = Admin(user=user)
+        return admin.save()
 
 class User(AbstractBaseUser, PermissionsMixin):
     '''
@@ -241,3 +238,21 @@ class Service(models.Model):
 
     class Meta:
         verbose_name_plural = "Services"
+
+
+class Hospital (models.Model):
+
+    name = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=120, null=True)
+    phone = models.CharField(max_length=30, null=True)
+    email = models.EmailField(null=True)
+    description = models.TextField(null=True, blank=True)
+
+    featured_image = models.ImageField(upload_to='hospital/', null=True, blank=True)
+
+
+    class Meta:
+        verbose_name = _("hospital")
+
+    def __str__(self):
+        return self.name

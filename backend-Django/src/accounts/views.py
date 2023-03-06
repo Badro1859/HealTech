@@ -13,41 +13,61 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 
+from rest_framework.renderers import StaticHTMLRenderer
 
 ## local packages
 
-from accounts.models import User, Admin, Service, Doctor, Employee, Patient
+from accounts.models import User, Admin, Service, Doctor, Employee, Patient, Hospital
 from accounts.serializers import \
     UserSerializer, AdminSerializer, \
-    PasswordResetSerializer, ServiceSerializer, \
+    PasswordResetSerializer, ServiceSerializer, HospitalSerializer, \
     DoctorSerializer, EmployeeSerializer, PatientSerializer
 from accounts.utils import get_userSerializer, get_userUpdateSerializer, get_instance_by_username
 
-from accounts.permissions import IsOwnerOrAdmin
+from accounts.permissions import IsOwnerOrAdmin, IsCustomAdmin, IsAdminOrReadOnly
 
 
-class CustomModelViewSet(ModelViewSet):
+class Profile(APIView):
 
-    ## global params
-    # permission_classes = (IsOwnerOrAdmin,)
-
-
-    ## API methods
-
-    ## ^/profile  GET method
-    @action(detail=False)
-    def profile(self, request):
-        if not request.user.is_authenticated :
-            return Response({'error':'you are not a user!! please login'}, status=status.HTTP_204_NO_CONTENT)
-        
+    def get(self, request):
         model = apps.get_model(app_label='accounts', model_name=request.user.role)
         instance = model.objects.filter(user=request.user)
 
         if len(instance) == 0:
             return Response({'Error':'this user does not exist!!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        instance = instance[0]
+        if request.user.role == 'Admin':
+            return Response(AdminSerializer(instance=instance).data, status=status.HTTP_200_OK)
+        if request.user.role == 'Doctor':
+            return Response(DoctorSerializer(instance=instance).data, status=status.HTTP_200_OK)
+        if request.user.role == 'Employee':
+            return Response(EmployeeSerializer(instance=instance).data, status=status.HTTP_200_OK)
         
-        serializer = self.get_serializer(instance[0])
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(PatientSerializer(instance=instance).data, status=status.HTTP_200_OK)
+
+
+class CustomModelViewSet(ModelViewSet):
+
+    ## global params
+    permission_classes = (IsAuthenticated, )
+
+
+    ## API methods
+
+
+    @action(detail=True, renderer_classes=[StaticHTMLRenderer], methods=['post'])
+    def reset_password(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = instance.user
+        serializer = PasswordResetSerializer(user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({"success": "Password reset successful"},
+                        status=status.HTTP_201_CREATED,)
+
+
 
     ### GET method (all)
     def list(self, request):
@@ -61,7 +81,7 @@ class CustomModelViewSet(ModelViewSet):
 
     ### POST method
     def create(self, request, *args, **kwargs):
-        self.userSerializer = get_userSerializer(data=request.data.get('user'))
+        self.userSerializer = get_userSerializer(data=request.data)#.get('user'))
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
@@ -92,37 +112,6 @@ class CustomModelViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ResetPasswordAPIView(UpdateAPIView):
-    
-    permission_classes = (AllowAny,)
-    
-    queryset = Admin.objects.all()
-    serializer_class = PasswordResetSerializer
-
-    def get_object(self):
-        admin = super().get_object()
-        
-        return admin.user
-    
-
-    """
-    Update a model instance.
-    """
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response({"success": "Password reset successful"},
-                        status=status.HTTP_201_CREATED,)
-
-
 class AdminViewSet(CustomModelViewSet):
 
     ## global params
@@ -130,6 +119,11 @@ class AdminViewSet(CustomModelViewSet):
     # permission_classes = (IsAdminUser, )
 
     queryset = Admin.objects.all()
+
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        permissions.append(IsCustomAdmin())
+        return permissions
 
 
 class DoctorViewSet(CustomModelViewSet):
@@ -140,6 +134,12 @@ class DoctorViewSet(CustomModelViewSet):
     ## for 'get' params
     queryset = Doctor.objects.all()
 
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        permissions.append(IsOwnerOrAdmin())
+        permissions.append(IsAdminUser())
+        return permissions
+
 
 class EmployeeViewSet(CustomModelViewSet):
     ## global params
@@ -147,6 +147,12 @@ class EmployeeViewSet(CustomModelViewSet):
 
     ## for 'get' params
     queryset = Employee.objects.all()
+
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        permissions.append(IsOwnerOrAdmin())
+        permissions.append(IsAdminUser())
+        return permissions
 
 
 class PatientViewSet(CustomModelViewSet):
@@ -156,11 +162,41 @@ class PatientViewSet(CustomModelViewSet):
     ## for 'get' params
     queryset = Patient.objects.all()
 
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        permissions.append(IsOwnerOrAdmin())
+        return permissions
+
 
 class ServiceViewSet(ModelViewSet):
 
     serializer_class = ServiceSerializer
-    permission_classes = (AllowAny,)
-    authentication_classes = [TokenAuthentication, ]
 
     queryset = Service.objects.all()
+
+    def get_permissions(self):
+        permissions = super().get_permissions()
+        permissions.append(IsAdminOrReadOnly())
+        return permissions
+
+
+class HospitalAPIView(APIView):
+
+    permission_classes = (IsAdminOrReadOnly, )
+
+    def get_object(self):
+        hospital = Hospital.objects.all()
+        if len(hospital) == 0 :
+            hos = Hospital(name="hospital name").save()
+            return hos
+        return hospital[0]
+
+    def get(self, request):
+        ser = HospitalSerializer(self.get_object())
+        return Response(ser.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        ser = HospitalSerializer(self.get_object(), data=request.data, partial=True)
+        ser.is_valid(raise_exception=True)
+        ser.save()
+        return Response(ser.data, status=status.HTTP_205_RESET_CONTENT)

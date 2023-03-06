@@ -4,10 +4,11 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 
-from accounts.models import User, Admin, Service, Doctor, Employee, Patient
+from accounts.models import User, Admin, Service, Doctor, Employee, Patient, Hospital
 
 
-
+############### authentication serializers
+##########################################
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -75,15 +76,8 @@ class PasswordResetSerializer(serializers.Serializer):
 
         return self.instance
 
-
-class ServiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Service
-        fields = '__all__'
-        read_only_fields = ('id', )
-
-
+############### Type of users serializers
+##########################################
 class AdminSerializer(serializers.ModelSerializer):
 
     user = UserUpdateSerializer(read_only=True)
@@ -125,3 +119,19 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = '__all__'
         read_only_field = ('id')
+
+############### others serializers
+##########################################
+class ServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = '__all__'
+        read_only_fields = ('id', )
+
+class HospitalSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Hospital
+        fields = '__all__'
+        read_only_fields = ('id', )

@@ -26,8 +26,7 @@ urlpatterns = [
 
     path(r"login", TokenCreateView.as_view(), name="login"),
     path(r"logout", TokenDestroyView.as_view(), name="logout"),
-
-    path(r'reset-password/<int:pk>/', views.ResetPasswordAPIView.as_view(), name='reset-password'),
     
-
+    path(r'profile/', views.Profile.as_view(), name='profile'),
+    path(r'hospital/', views.HospitalAPIView.as_view(), name='hospital'),
 ]

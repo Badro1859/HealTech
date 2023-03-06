@@ -13,16 +13,17 @@
 | 2 |    /logout                       |                  post                          |
 | 3 |    /admin                        |               get - post                       |
 | 4 |    /admin/<id>/                  |       get - put - patch - delete               |
-| 4 |    /admin/profile/               |                  get                           |
-| 5 |    /reset-password/<id>/         |                 put                            |
+| 5 |    /admin/<id>/reset_password/   |                 post                           |
 | 6 |    /service/                     |               get - post                       |
 | 7 |    /service/<id>/                |       get - put - patch - delete               |
 | 8 |    /doctor                       |               get - post                       |
 | 9 |    /doctor/<id>/                 |       get - put - patch - delete               |
-| 4 |    /doctor/profile/              |                  get                           |
+| 9 |    /doctor/<id>/reset_password/  |                  post                          |
 |10 |    /employee                     |               get - post                       |
 |11 |    /employee/<id>/               |       get - put - patch - delete               |
-| 4 |    /employee/profile/            |                  get                           |
+|11 |    /employee/<id>/reset_password/|                  post                          |
 |12 |    /patient                      |               get - post                       |
 |13 |    /patient/<id>/                |       get - put - patch - delete               |
-| 4 |    /patient/profile/             |                  get                           |                
+|13 |    /patient/<id>/reset_password/ |                  post                          |
+|14 |    /profile                      |                 get                            |
+|14 |    /hospital                     |                get - post                      |
