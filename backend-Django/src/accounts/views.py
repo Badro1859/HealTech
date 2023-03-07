@@ -81,7 +81,7 @@ class CustomModelViewSet(ModelViewSet):
 
     ### POST method
     def create(self, request, *args, **kwargs):
-        self.userSerializer = get_userSerializer(data=request.data)#.get('user'))
+        self.userSerializer = get_userSerializer(data=request.data.get('user'))
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
@@ -93,15 +93,19 @@ class CustomModelViewSet(ModelViewSet):
 
         ## updata the user instance
         instance = self.get_object()
-        self.userSerializer = get_userUpdateSerializer(instance=instance.user, data=request.data.get('user'))
-
+        print("user serializer started")
+        if request.data.get('user'):
+            self.userSerializer = get_userUpdateSerializer(instance=instance.user, data=request.data.get('user'))
+        print("user serializer finished with success !!")
         ## updata admin instance
         return super().update(request, *args, **kwargs)
     
     def perform_update(self, serializer):
-        updated_user = self.userSerializer.save()
-
-        serializer.save(user=updated_user)
+        try:
+            updated_user = self.userSerializer.save()
+            serializer.save(user=updated_user)
+        except:
+            super().perform_update(serializer)
 
     ### DELETE method
     def destroy(self, request, *args, **kwargs):

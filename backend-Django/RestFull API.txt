@@ -27,3 +27,5 @@
 |13 |    /patient/<id>/reset_password/ |                  post                          |
 |14 |    /profile                      |                 get                            |
 |14 |    /hospital                     |                get - post                      |
+|14 |    /appointment                  |                get - post                      |
+|14 |    /appointment/<id>             |                get - put - patch               |

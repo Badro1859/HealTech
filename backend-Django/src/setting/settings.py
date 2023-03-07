@@ -47,9 +47,7 @@ INSTALLED_APPS = [
 
     # CUSTOM APP
     'accounts',
-
-    # VENDOR APP
-    'phonenumber_field',
+    'appointment',
 ]
 
 MIDDLEWARE = [
