@@ -18,7 +18,7 @@
 #################### USE DOCKER COMPOSE ########################
 
 - docker-compose build
-- docker up 
+- docker-compose up 
 
 /// to install other dependencies
 1 - docker up

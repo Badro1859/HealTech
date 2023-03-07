@@ -6,7 +6,8 @@ services: # the different images that will be running as containers
     # The dockerfile will be used to spin up an image during the build stage.
     build: 
       context: ./backend-Django
-      dockerfile: Dockerfile
+      # dockerfile: Dockerfile
+      
 
     # static storages provisioned since django does not handle static files in production
     volumes:
@@ -26,11 +27,11 @@ services: # the different images that will be running as containers
     # The dockerfile will be used to spin up an image during the build stage.
     build: 
       context: ./frontend-Vue
-      dockerfile: Dockerfile
+      # dockerfile: Dockerfile
 
     # static storages provisioned since django does not handle static files in production
     volumes:
-      - './backend-Django:/home/healtech-frontend'
+      - './frontend-Vue:/home/healtech-frontend'
 
     ports:
       - 8080:8080
