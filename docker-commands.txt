@@ -1,0 +1,25 @@
+
+
+############################# BUILD IMAGE INDEPENT #####################3
+##### build and run backend image
+//// for build image:
+    - docker build .\backend-Django -t backend       
+//// for run container
+    - docker run -p 8000:8000 backend 
+
+
+##### build and run frontend image
+//// for build image:
+    - docker build .\frontend-Vue -t frontend       
+//// for run container
+    - docker run -p 8080:8080 frontend 
+
+
+#################### USE DOCKER COMPOSE ########################
+
+- docker-compose build
+- docker up 
+
+/// to install other dependencies
+1 - docker up
+2 - docker exec <service-name> <command>
