@@ -16,5 +16,5 @@ routes.register(r'appointment', AppointmentAPIView,  basename='appointment')
 app_name='appointment'
 urlpatterns = [
     *routes.urls,
-    # path(r'appointment/', )
+   
 ]

@@ -1,0 +1,26 @@
+
+############################# BUILD AND RUN IMAGE #####################
+
+##### build and run backend image
+#################################
+//// build image:
+    - docker build .\backend-Django -t backend     
+
+//// run container
+    - docker run -p 8000:8000 backend 
+
+
+##### build and run frontend image
+##################################
+//// build image:
+    - docker build .\frontend-Vue -t frontend     
+
+//// run container
+    - docker run -p 8080:8080 frontend 
+
+
+############################# USE DOCKER COMPOSE #######################
+
+    - docker-compose up --build
+    - docker-compose start
+    - docker-compose exec <service-name> <command>

@@ -1,0 +1,49 @@
+version: "3.8"
+
+services: # the different images that will be running as containers
+  backend: # service name
+    # location of the dockerfile that defines the app image. 
+    # The dockerfile will be used to spin up an image during the build stage.
+    build: 
+      context: ./backend-Django
+      
+
+    # static storages provisioned since django does not handle static files in production
+    volumes:
+      - type: bind
+        source: ./backend-Django/src
+        target: /home/healtech-backend/src
+
+    ports:
+      - 8000:8000
+    
+    container_name: backend-app
+
+    # restart service when it fails
+    restart: "on-failure" 
+
+  
+  frontend: # service name
+    # location of the dockerfile that defines the app image. 
+    # The dockerfile will be used to spin up an image during the build stage.
+    build: 
+      context: ./frontend-Vue
+      # dockerfile: Dockerfile
+
+    # static storages provisioned since django does not handle static files in production
+    volumes:
+      - type: bind
+        source: ./frontend-Vue/src
+        target: /home/healtech-frontend/src
+
+    ports:
+      - 8080:8080
+    
+    container_name: frontend-app
+
+    # will only start if web is up and running
+    depends_on: 
+      - backend
+
+    # restart service when it fails
+    restart: "on-failure" 
