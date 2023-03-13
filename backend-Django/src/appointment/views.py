@@ -11,11 +11,12 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from accounts.models import Patient, Doctor, Employee
 from appointment.models import Appointment
 from appointment.serializers import AppointmentSerializer
+from appointment.permissions import IsStaff
 
 class AppointmentAPIView(ViewSet, ListCreateAPIView, RetrieveUpdateAPIView):
 
     serializer_class = AppointmentSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, IsStaff)
 
 
     def get_queryset(self):
@@ -30,6 +31,8 @@ class AppointmentAPIView(ViewSet, ListCreateAPIView, RetrieveUpdateAPIView):
             return Appointment.objects.filter(service=emp.in_service)
 
         return Appointment.objects.all()
+
+        return super().get_queryset()
     
 
 
@@ -47,7 +50,6 @@ class AppointmentAPIView(ViewSet, ListCreateAPIView, RetrieveUpdateAPIView):
         serializer.save(service=emp.in_service, employee=emp)
 
 
-
     ## GET methods for one appointment <pk>
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
@@ -59,14 +61,3 @@ class AppointmentAPIView(ViewSet, ListCreateAPIView, RetrieveUpdateAPIView):
     ## PATCH method
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
-
-
-    
-    def get_permissions(self):
-
-        permissions = super().get_permissions()
-
-        if self.request.method.lower() != 'get':
-            permissions.append(IsAdminUser())
-        
-        return permissions
