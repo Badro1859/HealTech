@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # CUSTOM APP
     'accounts',
     'appointment',
+    'record',
 ]
 
 MIDDLEWARE = [
