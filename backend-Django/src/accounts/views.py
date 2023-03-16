@@ -183,6 +183,24 @@ class ServiceViewSet(ModelViewSet):
         permissions.append(IsAdminOrReadOnly())
         return permissions
 
+    def create(self, request):
+        self.doctor = None
+        dctr = self.request.data.get('chief')
+        if dctr and dctr != '':
+            query = Doctor.objects.filter(pk=dctr)
+            if len(query) == 0:
+                return Response({'error':'this doctor does not exist!!'}, status=status.HTTP_400_BAD_REQUEST)
+            self.doctor = query[0]
+
+        return super().create(request)
+
+
+    def perform_create(self, serializer):
+        if self.doctor:
+            print(self.doctor)
+            serializer.save(chief=self.doctor)
+        else:    
+            super().perform_create(serializer)
 
 class HospitalAPIView(APIView):
 
