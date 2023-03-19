@@ -123,6 +123,7 @@ class PatientSerializer(serializers.ModelSerializer):
 ############### others serializers
 ##########################################
 class ServiceSerializer(serializers.ModelSerializer):
+    chief_name = serializers.ReadOnlyField(source='chief.full_name')
 
     class Meta:
         model = Service

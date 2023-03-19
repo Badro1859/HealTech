@@ -3,7 +3,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
 from django.utils.translation import gettext as _
@@ -105,8 +105,8 @@ class Profile(models.Model):
     '''
 
     gender_choices = (
-        ('Male', 'Male'),
-        ('Female', 'Female'),
+        ('Male', 'Masculin'),
+        ('Female', 'Feminin'),
     )
 
     ####### database fields
@@ -129,6 +129,10 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    @property
+    def full_name(self):
+        full_name = "%s %s" % (self.first_name, self.last_name)
+        return full_name.strip()
 
     class Meta:
         abstract = True
@@ -169,6 +173,8 @@ class Doctor(StaffProfile):
 
     # Education
     scientific_degree = models.CharField(_('education degree'), max_length=100, blank=True, null=True)
+
+
 
 class Patient(Profile):
     marital_status_choices = (

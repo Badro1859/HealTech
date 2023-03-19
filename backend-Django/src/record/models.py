@@ -51,14 +51,12 @@ class Problem(models.Model):
     observation = models.TextField()
     status = models.TextField()
 
-
 class Allergie(models.Model):
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=100)
     reaction = models.CharField(max_length=200)
     severity = models.CharField(max_length=200)
-
 
 class Medication(models.Model):
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
