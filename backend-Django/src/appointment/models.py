@@ -1,11 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext as _
-
+from django.utils import timezone
 # Create your models here.
 from accounts.models import Patient, Doctor, Employee, Service
 
-import datetime
-from datetime import datetime as dt
 
 
 class Appointment(models.Model):
@@ -19,9 +17,8 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
 
-    date = models.DateField(_("appointment date"), default=datetime.date.today)
-    nowTime = dt.now().time()
-    time = models.TimeField(_("appointment time"), default=nowTime)
+    date = models.DateField(_("appointment date"), default=timezone.now().date())
+    time = models.TimeField(_("appointment time"), default=timezone.now().time())
 
     employee = models.ForeignKey(Employee, blank=True, null=True, on_delete=models.DO_NOTHING)
     doctor = models.ForeignKey(Doctor, blank=True, null=True, on_delete=models.DO_NOTHING)

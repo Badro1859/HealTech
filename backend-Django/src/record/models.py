@@ -25,9 +25,10 @@ class Lab(models.Model):
 class LabComponent(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    low = models.CharField(max_length=5)
-    high = models.CharField(max_length=5)
-    
+    low = models.CharField(max_length=10)
+    high = models.CharField(max_length=10)
+    unit = models.CharField(max_length=10, null=True)
+
     def __str__(self):
         return self.name
 

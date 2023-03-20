@@ -98,7 +98,8 @@ class RecordSerializer(serializers.ModelSerializer):
             PlanOfCare.objects.create(record=instance, **item)
         for item in exams:
             Exam.objects.create(record=instance, **item)
-
+        for item in tests:
+            Test.objects.create(record=instance, **item)
         return instance
 
 
