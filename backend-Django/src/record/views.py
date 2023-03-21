@@ -103,3 +103,60 @@ class RecordViewSet(ViewSet, CreateAPIView):
                 labs.append(newLab)
 
         return labs
+
+
+
+'''
+##################### RECORD SAMPLE (TO CREATE) #####################
+
+{
+  "doctor":1,
+  "patient":4,
+  "title":"the last test",
+  "date":"2023-05-06",
+  "abstract":"bla bla bla",
+  "problems": [
+    {
+      "observation": "test",
+      "status": "test2"
+    }
+  ],
+  "allergies": [
+    {
+      "name": "test",
+      "reaction": "test2",
+      "severity": "test2"
+    }
+  ],
+  "medications": [
+    {
+      "medicine": 1,
+      "quantity": 2,
+      "dose": "bal",
+      "notes": "bla bla",
+      "duration": "dure"
+    }
+  ],
+  "planOfCares": [
+    {
+      "activity_name": "test",
+      "planned_date": "2023-05-06",
+      "instructions": "test2"
+    }
+  ],
+  "exams": [
+    {
+      "name": "test",
+      "notes": "test",
+      "conclusion": "test2"
+    }
+  ],
+  "tests": [
+    {
+      "component": 1,
+      "result": "test2"
+    }
+  ]
+}
+
+'''

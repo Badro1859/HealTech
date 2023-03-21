@@ -29,3 +29,5 @@
 |14 |    /hospital                     |                get - post                      |
 |14 |    /appointment                  |                get - post                      |
 |14 |    /appointment/<id>             |                get - put - patch               |
+|14 |    /record/                      |                get - post                      |
+|14 |    /record/<id>                  |                get                             |
