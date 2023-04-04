@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework.response import Response
@@ -40,15 +40,13 @@ class RecordViewSet(ViewSet, CreateAPIView):
 
     ## return records by patient id
     def list(self, request):
-        if not request.data.get('patient'):
+        if not request.GET.get('patient'):
             return Response({'error': 'please give me patient ID'}, status=status.HTTP_400_BAD_REQUEST)
         
-        patient = Patient.objects.filter(pk=request.data.get('patient'))
-        if len(patient) != 1:
-            return Response({'error': 'please give me valid patient ID'}, status=status.HTTP_400_BAD_REQUEST)
+        patient = get_object_or_404(Patient, pk=request.GET.get('patient'))
 
         # get all record and its params
-        records = Record.objects.filter(patient=self.request.data.get('patient'))
+        records = Record.objects.filter(patient=patient)
         serialzer = RecordSerializer(instance=records, many=True)
 
         for item in serialzer.data:

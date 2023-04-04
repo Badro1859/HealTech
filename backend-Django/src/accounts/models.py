@@ -178,11 +178,11 @@ class Doctor(StaffProfile):
 
 class Patient(Profile):
     marital_status_choices = (
-        ('Married', 'Married'),
-        ('Widowed', 'Widowed'),
-        ('Separated', 'Separated'),
-        ('Divorced', 'Divorced'),
-        ('Single', 'Single'),
+        ('Married', 'Marié'),
+        ('Widowed', 'Veuf'),
+        ('Separated', 'Séparé'),
+        ('Divorced', 'Divorce'),
+        ('Single', 'Célibataire'),
     )
 
     blood_group_choices = (
