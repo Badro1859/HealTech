@@ -1,10 +1,18 @@
 version: "3.8"
 
 services:
+  ipfs:
+    build: 
+      context: ./ipfs
+    image: healtech_ipfs:latest
+    container_name: ipfs-node
+    ports:
+      - "5001:5001"
+      - "4001:4001"
   backend:
     build:
       context: ./backend-Django
-      target: healtech_backend
+    image: healtech_backend:v0.1
     volumes:
       - type: bind
         source: ./backend-Django/src
@@ -15,7 +23,7 @@ services:
   frontend:
     build:
       context: ./frontend-Vue
-      target: healtech_frontend
+    image: healtech_frontend:v0.1
     volumes:
       - type: bind
         source: ./frontend-Vue/src
@@ -25,3 +33,4 @@ services:
     container_name: frontend-app
     depends_on:
       - backend
+      - ipfs
