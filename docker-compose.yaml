@@ -30,6 +30,7 @@ services:
         target: /home/healtech-frontend/src
     ports:
       - 8080:8080
+    command: npm run dev
     container_name: frontend-app
     depends_on:
       - backend

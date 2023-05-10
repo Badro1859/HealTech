@@ -198,6 +198,8 @@ class Patient(Profile):
 
     #### database fields
 
+    # Blockchain identifier
+    bc_id = models.IntegerField(blank=True, null=True)
     # personal info
     marital_status = models.CharField(
                         _('marital status'), 
