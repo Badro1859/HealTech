@@ -14,7 +14,6 @@ from record.serializers import LabSerializer, LabComponentSerializer, \
         ProblemSerializer, AllergieSerializer, MedicationSerializer, \
         TestSerializer, ExamSerializer, PlanOfCareSerializer
 
-
 class LabViewSet(ModelViewSet):
     serializer_class = LabSerializer
     permission_classes = (IsAuthenticated, IsAdminUser)
@@ -35,7 +34,7 @@ class MedicineViewSet(ModelViewSet):
 
 class RecordViewSet(ViewSet, CreateAPIView):
     serializer_class = RecordSerializer
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAuthenticated,)
     queryset = Record.objects.all()
 
     ## return records by patient id
@@ -44,6 +43,8 @@ class RecordViewSet(ViewSet, CreateAPIView):
             return Response({'error': 'please give me patient ID'}, status=status.HTTP_400_BAD_REQUEST)
         
         patient = get_object_or_404(Patient, pk=request.GET.get('patient'))
+        if patient.user.id != request.user.id:
+           return Response({'error': 'You have not permission to perform this action'}, status=status.HTTP_403_FORBIDDEN)
 
         # get all record and its params
         records = Record.objects.filter(patient=patient)
