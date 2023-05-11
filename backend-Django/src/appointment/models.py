@@ -15,13 +15,13 @@ class Appointment(models.Model):
     )
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    service = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
     date = models.DateField(_("appointment date"), default=timezone.now().date())
     time = models.TimeField(_("appointment time"), default=timezone.now().time())
 
-    employee = models.ForeignKey(Employee, blank=True, null=True, on_delete=models.DO_NOTHING)
-    doctor = models.ForeignKey(Doctor, blank=True, null=True, on_delete=models.DO_NOTHING)
+    employee = models.ForeignKey(Employee, blank=True, null=True, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, blank=True, null=True, on_delete=models.CASCADE)
         
     status = models.CharField(_("status"), max_length=20, choices=status_choices, default="Pending")
 
