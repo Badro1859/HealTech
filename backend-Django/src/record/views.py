@@ -43,7 +43,7 @@ class RecordViewSet(ViewSet, CreateAPIView):
             return Response({'error': 'please give me patient ID'}, status=status.HTTP_400_BAD_REQUEST)
         
         patient = get_object_or_404(Patient, pk=request.GET.get('patient'))
-        if patient.user.id != request.user.id:
+        if request.user.role == "Patient" and patient.user.id != request.user.id:
            return Response({'error': 'You have not permission to perform this action'}, status=status.HTTP_403_FORBIDDEN)
 
         # get all record and its params
@@ -102,7 +102,6 @@ class RecordViewSet(ViewSet, CreateAPIView):
                 labs.append(newLab)
 
         return labs
-
 
 
 '''
